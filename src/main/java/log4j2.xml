@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="SM4Test" packages="">
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+       		<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+     	</Console>
+		<RollingFile name="rollingFile"
+			fileName="log/SM4.log" filePattern="log/SM4-%d{yyyy-MM-dd-HH-mm}-%i.log" append="false">
+			<ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+			<PatternLayout>
+				<Pattern>%d{yyyy-MM-dd-HH:mm:ss} %-5p %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10MB" />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Root level="all">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingFile" />
+		</Root>
+	</Loggers>
+</Configuration>

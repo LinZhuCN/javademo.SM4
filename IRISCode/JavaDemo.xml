@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2020.1.1 (Build 408U)" ts="2022-04-11 11:00:20">
+<Class name="JavaDemo.SM4.JavaInvokingTest">
+<Super>%RegisteredObject</Super>
+<TimeChanged>66210,39468.275613</TimeChanged>
+<TimeCreated>66169,49126.394255</TimeCreated>
+
+<UDLText name="T">
+<Content><![CDATA[
+// Using static proxy class with JSON 
+
+]]></Content>
+</UDLText>
+
+<Method name="TestStcProxyWithJson">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>srcFile:%String,tgtFile:%String</FormalSpec>
+<Implementation><![CDATA[
+	// Calling Java method with Static proxy class
+ 	w "--Calling Java method with Static proxy class--",!
+	//Generate the proxy
+	//Actually this import only need be called once unless the jar is updated
+	s sc = ##class(%Net.Remote.Service).OpenGateway("JavaServer", .gatewayConfig) 
+	s sc = ##class(%Net.Remote.Service).ConnectGateway(gatewayConfig, .gateway, "C:\temp\*", 1)
+	//Generating proxy class if not existing yet
+	s clsDef = ##class(%Dictionary.ClassDefinition).%OpenId("com.intersystems.demo.SM4.SM4WrapperWithJson")
+	If ("" = clsDef) {
+		w "--Proxy class not generated, generating--",!
+		s sc = gateway.%Import("com.intersystems.demo.SM4.SM4WrapperWithJson")
+		if ('sc){
+			write !,$system.OBJ.DisplayError(sc)
+			Quit
+		} 
+	}
+	//Compose binary stream from file
+	s fileScr=##class(%Stream.FileCharacter).%New()
+  	s sc=fileScr.LinkToFile(srcFile)
+	//After the proxy generated, it can be calle just as a ObjectScript class
+	try{
+	 w "--Running proxy java call-- ",!
+	 #Dim arg As %Stream.GlobalBinary = ##Class(%Stream.GlobalBinary).%New()
+	 s payload = ##Class(Demo.Entity.EncPayload).%New()
+	 s payload.secretKey = "d009251cd977432db68847c89315feea"
+	 d payload.content.CopyFrom(fileScr)
+	 d payload.%JSONExportToStream(arg)
+	 w payload.content.Read()
+	 s rtnStream = ##class(com.intersystems.demo.SM4.SM4WrapperWithJson).SM4EncryptJsonuECB(gateway,arg)
+	 w "The type of result is "_$classname(rtnStream),!
+	 w !,"--Proxy java call finished successfully-- ",!
+	 //Write the binary stream to file
+	 If '(##class(%File).Exists(tgtFile)){
+	  	 s sc = ##class(%File).Delete(tgtFile)
+	 }
+	 s file=##class(%File).%New(tgtFile)
+	 d file.Close()
+	 s fileTgt=##class(%Stream.FileBinary).%New()
+  	 s sc=fileTgt.LinkToFile(tgtFile)
+  	 s sc = fileTgt.CopyFromAndSave(rtnStream)
+  	 if ('sc){
+			write !,$system.OBJ.DisplayError(sc)
+			Quit
+		} 
+  	 w !,"--Content Write to file " _ tgtFile _"-- ",!
+ }catch e{
+	 w "Error calling proxy class",!
+	 write !,$system.OBJ.DisplayError(e.AsStatus())
+ }
+]]></Implementation>
+</Method>
+</Class>
+
+
+</Export>
