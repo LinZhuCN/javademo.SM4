@@ -2,9 +2,9 @@ package com.intersystems.demo.SM4.Test;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayOutputStream;
+/*import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileInputStream;*/
 import java.util.UUID;
 import org.junit.Test;
 
@@ -16,8 +16,8 @@ import cn.xjfme.encrypt.utils.sm4.SM4Utils;
 
 public class SM4WrapperWithJsonTest {
 
-	private static String filePath = "/Users/lzhu/eclipse-workspace/javademo.SM4/src/main/resources/files";
-	private static String srcFileName = "sample.xml";
+	//private static String filePath = "/Users/lzhu/eclipse-workspace/javademo.SM4/src/main/resources/files";
+	//private static String srcFileName = "sample.xml";
 
 	/* 使用中文字符串测试加密前字符串与加密并解密后字符串相同 */
 	@Test
@@ -43,10 +43,10 @@ public class SM4WrapperWithJsonTest {
 	
 	/*
 	 * 使用XML文件测试加密前文件内容与加密并解密后的内容相同 
-	 * 注意：执行效率低下，加密70+kb的数据需要十秒以上，解密需要约3秒 
+	 * 注意：执行效率低下，加密70+kb的数据需要十秒以上，解密需要约3秒；大于2MB的文件加密10分钟仍不能结束 
 	 * 应是加密算法实现的效率不佳
 	 */
-	@Test
+	/*@Test
 	public void testSM4EncryptJsonWithFile() {
 		try {
 			File srcFile = new File(filePath+"/"+srcFileName);
@@ -75,6 +75,6 @@ public class SM4WrapperWithJsonTest {
 			e.printStackTrace();
 			fail("Test Failed");
 		}
-	}
+	}*/
 
 }

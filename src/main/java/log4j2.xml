@@ -5,7 +5,7 @@
        		<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
      	</Console>
 		<RollingFile name="rollingFile"
-			fileName="log/SM4.log" filePattern="log/SM4-%d{yyyy-MM-dd-HH-mm}-%i.log" append="false">
+			fileName="testLog/javaSM4App.log" filePattern="testLog/javaSM4App-%d{yyyy-MM-dd-HH-mm}-%i.log" append="true">
 			<ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
 			<PatternLayout>
 				<Pattern>%d{yyyy-MM-dd-HH:mm:ss} %-5p %m%n</Pattern>
