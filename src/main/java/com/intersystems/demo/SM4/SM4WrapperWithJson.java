@@ -2,6 +2,7 @@ package com.intersystems.demo.SM4;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.parser.ParserConfig;
 import com.intersystems.demo.SM4.Entity.EncTarget;
 
 import cn.xjfme.encrypt.utils.sm4.SM4Utils;
@@ -16,6 +17,12 @@ import org.apache.logging.log4j.Logger;
  * 加密结果同样以二进制数组返回给调用方
 */
 public class SM4WrapperWithJson {
+	
+	//禁用fastjson的AutoType功能，避免AutoType漏洞安全风险
+	static {
+		ParserConfig.getGlobalInstance().setSafeMode(true);
+	}
+	
 	private static final Logger logger = LogManager.getLogger(SM4WrapperWithJson.class);
 	
 	/*
@@ -33,7 +40,7 @@ public class SM4WrapperWithJson {
 		
 	}
 
-	/* 使用二进制Json数据作为输入
+	/* 使用二进制Json作为输入
 	 * 
 	 *  */
 	public static byte[] SM4EncryptJson_ECB(byte[] jsonBytes) throws Throwable {
@@ -49,8 +56,7 @@ public class SM4WrapperWithJson {
 		return SM4Encrypt(payload.getContent(),payload.getSecretKey());
 		}catch (Exception e){
 			logger.error("Error encrypting : " , e);
-			logger.error("Content : " + jsonBytes);
-			logger.error("As String : " + new String(jsonBytes));
+			logger.error("String : " + new String(jsonBytes));
 			return null;
 		}
 	}

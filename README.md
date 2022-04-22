@@ -7,10 +7,11 @@ ECB模式与CBC模式的差别可参考本例依赖的SM4开源实现：https://
 ## ObjectScript代码
 见/IRISCode/JavaDemo.xml，需导入IRIS中Build后使用
 
-## Log4J配置
+## Log4J2配置
 在类路径下配置log4j2.xml，在/src/main/java下有示例。    
 目前的配置是Java程序的执行路径下/log中输出SM4.log。  
-因此，在被IRIS调用执行时，日志文件将在 [IRIS安装路径]/mgr/[命名空间] 或 
+因此，在被IRIS调用执行时，日志文件将在 [IRIS安装路径]/mgr/[命名空间] 或 [IRIS安装路径]/mgr/的log子目录下产生和保存。
+当然，由于Log4J2存在若干安全漏洞，在生产环境使用时应更换为更安全的日志组件
 
 
 
