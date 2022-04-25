@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2020.1.1 (Build 408U)" ts="2022-04-11 11:00:20">
+<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2020.1.1 (Build 408U)" ts="2022-04-25 09:24:08">
+<Class name="Demo.Entity.EncPayload">
+<Super>%RegisteredObject,%JSON.Adaptor</Super>
+<TimeChanged>66184,63401.981108</TimeChanged>
+<TimeCreated>66183,64231.689669</TimeCreated>
+
+<Property name="secretKey">
+<Type>%String</Type>
+</Property>
+
+<Property name="content">
+<Type>%Stream.GlobalCharacter</Type>
+</Property>
+</Class>
+
+
+<Project name="JavaDemo" LastModified="2022-04-25 09:23:36.760809">
+  <Items>
+    <ProjectItem name="Demo.XMLDemo.BS.DocSOAPService" type="CLS"></ProjectItem>
+    <ProjectItem name="JavaDemo.SM4.JavaInvokingTest" type="CLS"></ProjectItem>
+    <ProjectItem name="Demo.Entity.EncPayload" type="CLS"></ProjectItem>
+  </Items>
+</Project>
+
+
 <Class name="JavaDemo.SM4.JavaInvokingTest">
 <Super>%RegisteredObject</Super>
-<TimeChanged>66210,39468.275613</TimeChanged>
+<TimeChanged>66223,66432.685468</TimeChanged>
 <TimeCreated>66169,49126.394255</TimeCreated>
 
 <UDLText name="T">
@@ -21,7 +45,8 @@
 	//Generate the proxy
 	//Actually this import only need be called once unless the jar is updated
 	s sc = ##class(%Net.Remote.Service).OpenGateway("JavaServer", .gatewayConfig) 
-	s sc = ##class(%Net.Remote.Service).ConnectGateway(gatewayConfig, .gateway, "C:\temp\*", 1)
+	#Dim gateway as %Net.Remote.Gateway
+	s sc = ##class(%Net.Remote.Service).ConnectGateway(gatewayConfig, .gateway, , 1)
 	//Generating proxy class if not existing yet
 	s clsDef = ##class(%Dictionary.ClassDefinition).%OpenId("com.intersystems.demo.SM4.SM4WrapperWithJson")
 	If ("" = clsDef) {
@@ -35,16 +60,22 @@
 	//Compose binary stream from file
 	s fileScr=##class(%Stream.FileCharacter).%New()
   	s sc=fileScr.LinkToFile(srcFile)
+  	if (0=fileScr.SizeGet()){
+	  	w "--Can not open file " _srcFile_ " or file is empty, exit.--",!
+	  	quit
+	}
 	//After the proxy generated, it can be calle just as a ObjectScript class
 	try{
 	 w "--Running proxy java call-- ",!
 	 #Dim arg As %Stream.GlobalBinary = ##Class(%Stream.GlobalBinary).%New()
 	 s payload = ##Class(Demo.Entity.EncPayload).%New()
 	 s payload.secretKey = "d009251cd977432db68847c89315feea"
+	 s payload.secretKey = "C2FEEEAC-CFCD-11D1-8B05-00600806D9B6"
 	 d payload.content.CopyFrom(fileScr)
 	 d payload.%JSONExportToStream(arg)
 	 w payload.content.Read()
 	 s rtnStream = ##class(com.intersystems.demo.SM4.SM4WrapperWithJson).SM4EncryptJsonuECB(gateway,arg)
+	 s sc = gateway.%Shutdown()
 	 w "The type of result is "_$classname(rtnStream),!
 	 w !,"--Proxy java call finished successfully-- ",!
 	 //Write the binary stream to file
@@ -68,6 +99,4 @@
 ]]></Implementation>
 </Method>
 </Class>
-
-
 </Export>

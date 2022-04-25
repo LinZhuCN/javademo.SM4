@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="warn" name="SM4Test" packages="">
+<Configuration status="warn" name="SM4Test">
 	<Appenders>
 		<Console name="console" target="SYSTEM_OUT">
        		<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
      	</Console>
 		<RollingFile name="rollingFile"
-			fileName="testLog/javaSM4App.log" filePattern="testLog/javaSM4App-%d{yyyy-MM-dd-HH-mm}-%i.log" append="true">
-			<ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+			fileName="./testLog/javaSM4App.log" filePattern="./testLog/javaSM4App-%d{yyyy-MM-dd-HH-mm}-%i.log" append="true">
+			<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
 			<PatternLayout>
 				<Pattern>%d{yyyy-MM-dd-HH:mm:ss} %-5p %m%n</Pattern>
 			</PatternLayout>
@@ -17,8 +17,8 @@
 	</Appenders>
 	<Loggers>
 		<Root level="all">
-			<AppenderRef ref="console" />
 			<AppenderRef ref="rollingFile" />
+			<AppenderRef ref="console" />
 		</Root>
 	</Loggers>
 </Configuration>

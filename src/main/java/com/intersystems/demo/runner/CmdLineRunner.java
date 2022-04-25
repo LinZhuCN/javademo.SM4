@@ -11,6 +11,12 @@ import cn.xjfme.encrypt.utils.sm4.SM4Utils;
 public class CmdLineRunner {
 
 	public static void main(String[] args) throws Throwable {
+		normalCase();
+		logCase();
+	}
+	
+	//测试加密解密
+	public static void normalCase() throws Throwable {
 		String plainText = "This is the test content";
 		EncTarget target = new EncTarget();
 	    String uuidKey = UUID.randomUUID().toString().replace("-", "");
@@ -28,6 +34,21 @@ public class CmdLineRunner {
 			System.out.println("Test failed, plainText is " + plainText 
 					+ " while decrypted String is " + decString);
 		}
+	}
+	
+	//触发异常（secretyKey不正确），借此验证日志可正确被记录
+	public static void logCase() throws Throwable {
+		String plainText = "This is the test content";
+		EncTarget target = new EncTarget();
+	    String uuidKey = UUID.randomUUID().toString();
+		target.setSecretKey(uuidKey);
+		target.setContent(plainText);
+		String jsonString = JSON.toJSONString(target);
+		//Should trigger an Enc exception here due to the format of UUID
+		//Log can be find according to log4j2 configuration
+		@SuppressWarnings("unused")
+		byte[] encryptedBytes = SM4WrapperWithJson.SM4EncryptJson_ECB(jsonString.getBytes("UTF-8"));
+		
 	}
 
 }

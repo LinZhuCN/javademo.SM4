@@ -34,6 +34,11 @@ public class SM4WrapperWithJson {
         sm4.hexString = true;
         //2. 将byte数组转换为字符串
         String cipherText = sm4.encryptData_ECB(plainText);
+        if ((null == cipherText) || 1 > cipherText.length()) {
+        	logger.warn("Empty encrypted string for Content:" + plainText);
+        	logger.warn("Using keySecret:" + secretKey);
+        	return null;
+        }
         byte[] sm4Byte = cipherText.getBytes();
         //3. 直接返回加密后的byte数组
         return sm4Byte;
@@ -53,7 +58,8 @@ public class SM4WrapperWithJson {
 		//转为字符串不是必须的，也能通过byte[]直接转对象
 		inJson = new String(jsonBytes);
 		EncTarget payload = JSON.parseObject(inJson, EncTarget.class);
-		return SM4Encrypt(payload.getContent(),payload.getSecretKey());
+		byte[] rtnArray = SM4Encrypt(payload.getContent(),payload.getSecretKey());
+		return rtnArray;
 		}catch (Exception e){
 			logger.error("Error encrypting : " , e);
 			logger.error("String : " + new String(jsonBytes));
