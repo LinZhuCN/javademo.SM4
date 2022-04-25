@@ -2,7 +2,7 @@
 这是一段示例程序，并不适合直接用于生产环境。  
 另外，SM4中包含ECB与CBC两种模式，本例只使用了ECB模式，而生产环境推荐使用CBC模式。  
 ECB模式与CBC模式的差别可参考本例依赖的SM4开源实现：https://github.com/xjfuuu/SM2_SM3_SM4Encrypt   
-如使用CBC模式，本例中的代码也需要进行若干修改。
+如使用CBC模式，本例中的代码也需要进行若干修改。  
 该项目同样使用Maven进行管理，但在笔者使用的阿里云Maven存储库（http://maven.aliyun.com/nexus/content/groups/public）中并没有记录，因此从Git将该项目引入工作空间后，开发者可通过maven install将其安装在本地Maven库中再纳入管理。
 
 ## ObjectScript代码
