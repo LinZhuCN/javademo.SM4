@@ -14,6 +14,11 @@ ECB模式与CBC模式的差别可参考本例依赖的SM4开源实现：https://
 因此，在被IRIS调用执行时，日志文件将在 [IRIS安装路径]/mgr/[命名空间] 或 [IRIS安装路径]/mgr/的log子目录下产生和保存。  
 当然，由于Log4J2存在若干安全漏洞，在生产环境使用时应更换为更安全的日志组件。
 
+## 整体说明
+中文版：https://cn.community.intersystems.com/post/%E5%9C%A8objectscript%E4%B8%AD%E8%B0%83%E7%94%A8java%E7%A8%8B%E5%BA%8F-%E2%80%94%E2%80%94-%E4%B8%80%E4%B8%AA%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95%E7%9A%84%E6%A1%88%E4%BE%8B
+
+
+
 
 
 
